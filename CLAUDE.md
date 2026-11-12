@@ -1,0 +1,29 @@
+# Forge Stack Context — SCP Substrate
+
+CLAUDE.md — Context briefing for AI assistants working in this repository.
+
+## What this repo is
+Tier 1 Consumer. Reads P8/P9 substrate SQLite, renders claims as a
+3D time-aware visual field. Does not store, sign, or classify —
+that is P8/P9/P13's job. This consumer only renders.
+
+## Status: SCAFFOLD, not frozen
+This repo is at v0.1.0-scaffold. The frontend has been harvested
+from a prior build (`JamesTheGiblet/scp-substrate` old). It renders
+5 faces. P13 DataCube has 6 faces. The 6th (UNKNOWN) has NOT yet
+been integrated into the visual language. See SPEC.md §1 open
+question — this decision must be made before v1.0.0 freeze.
+
+## The Immutable Rule
+Never rewrite a primitive. Add a layer. This repo consumes
+primitives; it never edits them.
+
+## Read-only v1
+The web UI is READ-ONLY in v1. It reads P8/P9 SQLite and renders.
+No writes through the browser. All writes go through The Cockpit
+(`forge remember`, `forge dream`, etc.).
+
+## Dual-Device Workflow
+S24/Termux and laptop/VS Code. LF-only. British English (-ise).
+Good/Bad/Ugly CHANGELOG, latest at top. Header discipline on every
+file and every function.
