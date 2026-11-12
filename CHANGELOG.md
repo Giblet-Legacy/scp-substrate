@@ -15,11 +15,13 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 - Old 12MB `sc.db` and its capsule schema NOT migrated. The old
   data is dead. New claims live in P9's `claims` table.
 - Read-only posture recorded: no writes through the browser in v1.
+- 6-face decision made: six faces, one per cube side. UNKNOWN
+  replaces HUMAN on the 6th side. Human attestation moves to the
+  gold glow (--seal), per P13's rule. Recorded in HARVEST_DIFF.md.
 
 ### Bad
-- Frontend renders 5 faces (FACT, COUNTER, OPINION, FICTION,
-  CONTEXT). P13 DataCube has 6 faces. UNKNOWN is not yet
-  represented in the visual language.
+- Frontend renders 5 knowledge faces + HUMAN (attestation) on the
+  6th side. Decision made to swap HUMAN for UNKNOWN — see Good.
 - Backend server (Python, reads P9 SQLite) not yet written.
 - No tests, no spec freeze. This is v0.1.0-scaffold, not v1.0.0.
 

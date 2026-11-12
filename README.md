@@ -19,13 +19,16 @@ Status:   0.1.0-scaffold — SCAFFOLD, NOT FROZEN
 This repository is a scaffold, not a finished consumer.
 
 - The 3D frontend (`static/view/`) was harvested from a prior build.
-- It renders 5 faces (FACT, COUNTER, OPINION, FICTION, CONTEXT).
-- P13 DataCube has 6 faces — the 6th is UNKNOWN (the Dream Space).
-- The visual language for UNKNOWN has NOT yet been decided.
+- 6-face decision is RESOLVED: six faces, one per cube side.
+  UNKNOWN replaces HUMAN on the 6th side. Human attestation moves
+  to the gold glow (--seal). See `HARVEST_DIFF.md` for the exact
+  diff plan.
+- The frontend patch is NOT yet applied.
 - The Python server that wires P9 SQLite to the frontend is NOT
   yet written.
 
-See `SPEC.md` for the open question and the pending work.
+See `SPEC.md` and `HARVEST_DIFF.md` for the resolved design and
+remaining implementation work.
 
 ## Verifying this repository
 

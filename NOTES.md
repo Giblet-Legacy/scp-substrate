@@ -32,19 +32,11 @@ server used the old schema. Not reused.
 
 ## Open questions (must resolve before v1.0.0 freeze)
 
-- **Q1. How does UNKNOWN appear visually?**
-  The old frontend paints 5 faces per cube. P13 has 6. Candidate
-  designs:
-    (a) Glow — UNKNOWN claims get a soft grey/gold aura around
-        the cube. Reads as "hypothesis, not yet faced."
-    (b) Hover — UNKNOWN claims float slightly above the field
-        plane. Dreams are visually separated from fact.
-    (c) Sixth face hidden — cube has all 6 sides; UNKNOWN paints
-        on the 6th, revealed by rotation on hover/filter.
-    (d) Not shown in the field at all — dreams live in a separate
-        view (tab, toggle, overlay).
-  This is a design decision, not a code decision. Decide it before
-  writing the backend.
+- **Q1. How does UNKNOWN appear visually? — RESOLVED**
+  Six faces, one per cube side. UNKNOWN replaces HUMAN on the 6th
+  side. Human attestation moves to the gold glow (--seal), per
+  P13's rule that human validation is never a face.
+  Full rationale and exact diffs in HARVEST_DIFF.md.
 
 - **Q2. Time slider source.** Old code used `created` timestamps on
   capsules. P9 `claims` table has `created_at`. Map them, or derive

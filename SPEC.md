@@ -14,17 +14,20 @@ Version:   DRAFT — not yet v1.0.0
 Licence:   MSL-1.0
 Author:    James Gilbert (Giblets Forge)
 
-## 1. OPEN QUESTION — six faces in a five-face visual
+## 1. Six faces, one per cube side (DECIDED)
 
-The old frontend renders each cube with 5 painted faces. P13 DataCube
-defines 6 faces (FACT, COUNTER, OPINION, FICTION, CONTEXT, UNKNOWN).
-UNKNOWN is the Dream Space — hypotheses that have passed the Keystone
-Gate but not yet been promoted.
+The old frontend rendered each cube with 6 painted sides — but its
+6th side was HUMAN (attestation), not UNKNOWN. P13 DataCube defines
+6 faces (FACT, COUNTER, OPINION, FICTION, CONTEXT, UNKNOWN) and
+explicitly states that human validation is NEVER a face — it is a
+separate signed attestation.
 
-How should UNKNOWN appear in the 3D field? Four candidate designs
-are recorded in NOTES.md §Q1. **This must be decided before any
-backend code is written.** SPEC v1.0.0 will be produced only after
-the decision is made.
+Decision: **six faces, one per cube side.** UNKNOWN replaces HUMAN
+on the 6th side. Human attestation moves to the existing gold glow
+(CSS --seal).
+
+Full rationale, exact diffs, and rejected alternatives are recorded
+in HARVEST_DIFF.md (this repo).
 
 ## 2. What v1.0.0 will look like (once Q1 is resolved)
 
@@ -54,9 +57,12 @@ the decision is made.
 
 - Status: DRAFT. Not frozen.
 - v1.0.0 requires:
-  1. Q1 (6-face visual) resolved.
-  2. Backend server written.
-  3. Tests written and passing.
-  4. Independent verification (read-only JSON matches P9's claims).
-- When all four are met, this becomes SPEC v1.0.0 and the repo
-  becomes frozen.
+  1. Q1 (6-face visual) resolved. — RESOLVED (six faces, one per
+     side; UNKNOWN on the 6th; attestation as gold glow). See
+     HARVEST_DIFF.md.
+  2. Frontend patch applied (view_field_world.js, ~15 lines).
+  3. Backend server written (stdlib http.server, read-only JSON).
+  4. Tests written and passing.
+  5. Independent verification (read-only JSON matches P9's claims).
+- When all are met, this becomes SPEC v1.0.0 and the repo becomes
+  frozen.
