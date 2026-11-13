@@ -24,6 +24,10 @@ SPEC_V3 §3 for attestations. `serve.py` stays frozen.
 v3: v2 plus ISO 8601 times, so attested claims no longer stop the
 field drawing. Run `python serve_v3.py`.
 
+## v4 layer
+`serve_v4.py` (SPEC_V4.md, frozen 4.0.0) is the entry point from
+v4: v3 plus a "Keywords" cluster mode where a subject is the unit.
+
 ## The Immutable Rule
 Never rewrite a primitive. Add a layer. This repo consumes
 primitives; it never edits them.

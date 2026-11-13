@@ -51,3 +51,6 @@ P9 substrate (claims/evidence). Old capsules are dead.
 - Freeze serve_v3 at 3.0.0? Built and green on the laptop (33/33); the
   field checked in headless Edge. Raised 2026-11-13. Owner: James.
   **Resolved 2026-11-13 — James: "freeze".** Laptop and S24.
+- Freeze serve_v4 at 4.0.0? Built and green on the laptop (39/39); the
+  Keywords mode checked in headless Edge. Raised 2026-11-13. Owner: James.
+  **Resolved 2026-11-13 — James: "freeze commmit and push".** Frozen on the laptop run; S24 run still to be confirmed.

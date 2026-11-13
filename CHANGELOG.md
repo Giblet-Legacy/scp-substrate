@@ -16,6 +16,33 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 - (none)
 
+## [v4.0.0] — 2026-11-13 — FROZEN
+
+### Good
+
+- serve_v4.py (SPEC_V4.md 4.0.0): a "Keywords" choice in the field's
+  "Cluster by" bar. A subject (a repo) is the unit: all its claims stay
+  together, and subjects group by their claims' own words (stemmed, stop
+  words dropped, words in more than 30% of subjects skipped), so repos
+  group without tags: ledger, capsule, attestation, ed25519, weight,
+  block, lllm. Open `#mode:KEYWORDS` to start there. 39/39 tests pass.
+  Built as a layer: serve.py, serve_v2.py, serve_v3.py and static/view/
+  untouched. Frozen at 4.0.0 (James: "freeze commmit and push", 2026-11-13); laptop run, S24 run
+  still to be confirmed.
+
+### Bad
+
+- Clustering is greedy, one cluster per subject: a subject that fits two
+  topics shows in the first and is linked to the other.
+- In "Tags" mode, 24 subjects make 24 small clusters packed close round
+  the centre, with labels overlapping until you zoom; the spacing is in
+  the frozen frontend.
+
+### Ugly
+
+- v4 restates v1's render_page (about ten lines) because v1 hardcodes
+  `MODES = {}`.
+
 ## [v3.0.0] — 2026-11-13 — FROZEN
 
 ### Good

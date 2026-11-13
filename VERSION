@@ -5,4 +5,6 @@
 
 # 3.0.0 — serve_v3.py frozen (SPEC_V3.md: ISO times so attested claims draw). Tests pass (33/33), laptop and S24.
 
-3.0.0
+# 4.0.0 — serve_v4.py frozen (SPEC_V4.md: keyword clusters, a subject is the unit). 39/39. Tests pass on the laptop; S24 run to be confirmed.
+
+4.0.0

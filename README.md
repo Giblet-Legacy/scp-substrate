@@ -16,6 +16,8 @@ Status:   1.0.0 — FROZEN (serve.py). v2 (serve_v2.py, SPEC_V2.md):
           verified reads via P9 substrate_v3, frozen at 2.0.0.
           v3 (serve_v3.py, SPEC_V3.md): ISO times, so attested claims
           draw; frozen at 3.0.0. Run `python serve_v3.py`.
+`serve_v4.py` (SPEC_V4.md) adds keyword clusters ("Cluster by: Keywords");
+frozen at 4.0.0. Run `python serve_v4.py`.
 
 ## Run it
 
