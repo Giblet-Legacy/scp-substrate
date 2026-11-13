@@ -14,6 +14,11 @@ the 6th side, human attestation as the gold glow (SPEC.md §1,
 HARVEST_DIFF.md). Tests: `python -m pytest -q`. Changes after freeze
 are new layers and a new SPEC version, not edits to v1 behaviour.
 
+## v2 layer
+`serve_v2.py` (SPEC_V2.md, frozen 2.0.0) is the entry point from
+v2: reads through P9 `substrate_v3` with verification and follows P9
+SPEC_V3 §3 for attestations. `serve.py` stays frozen.
+
 ## The Immutable Rule
 Never rewrite a primitive. Add a layer. This repo consumes
 primitives; it never edits them.

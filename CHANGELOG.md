@@ -2,6 +2,36 @@
 
 CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
+## [Unreleased]
+
+### Good
+
+- (none)
+
+### Bad
+
+- (none)
+
+### Ugly
+
+- (none)
+
+## [v2.0.0] — 2026-11-13 — FROZEN
+
+### Good
+
+- `SPEC_V2.md`, `test_substrate_v2.py` (5 tests, run red first) and `serve_v2.py`: reads P9 through substrate_v3's read-only API with verify-on-read. Unverified claims are not drawn (named on stderr, counted in `/api/health`); unverified evidence never lights the glow. v1's adapter, page, static serving and 405 rules reused. 29/29 pass.
+- Attestations follow P9 SPEC_V3 §3, so a Cockpit v1.1 `approve` lights the gold glow and a later `refuse` shows as retracted.
+- Built on James's delegation ("fix all 11 issues"). Frozen at 2.0.0 on James's sign-off ("freeze all", 2026-11-13).
+
+### Bad
+
+- Frozen on the laptop run alone (2026-11-13); the S24 run is still to be confirmed.
+
+### Ugly
+
+- serve_v2 copies v1's 20-line `_route` to swap in the verified readers, because v1 calls its own module functions. Safe while serve.py is frozen.
+
 ## [v1.0.0] — 2026-11-13 — FROZEN
 
 ### Good

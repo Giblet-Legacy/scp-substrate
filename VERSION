@@ -1,4 +1,6 @@
 # VERSION — scp-substrate (Tier 1: SCP Substrate)
 # Function: the current release version of this consumer. Advances only on freeze.
 
-1.0.0
+# 2.0.0 — serve_v2.py frozen (SPEC_V2.md: verified reads via P9 substrate_v3). Tests pass (29/29).
+
+2.0.0

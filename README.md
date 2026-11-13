@@ -12,7 +12,9 @@ Depends:  P8 Store (SQLite), P9 Substrate (claims/evidence)
 Consumed: The operator (visual exploration), The Legacy
 Licence:  MSL-1.0
 Author:   James Gilbert (Giblets Forge)
-Status:   1.0.0 — FROZEN
+Status:   1.0.0 — FROZEN (serve.py). v2 (serve_v2.py, SPEC_V2.md):
+          verified reads via P9 substrate_v3, frozen at 2.0.0.
+          Run `python serve_v2.py`.
 
 ## Run it
 
