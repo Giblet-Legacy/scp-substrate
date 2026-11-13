@@ -1,4 +1,13 @@
-// Part of the cube field. kg_view.py joins these inside one function.
+// view_field_time.js — the time slider: replays cubes as they stood at each dated moment.
+//
+// Function:
+//     One fragment of the cube field. serve.py joins the six view_field_*.js
+//     files, in the order world, form, hubs, draw, time, move, inside one
+//     function, so they share scope. Canvas 2D with its own 3D maths; no network.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
   // --- going back through time ----------------------------------------------
   // Each step is a moment when something changed, so quiet hours take no room.
   const timeRange = document.getElementById("timerange");
@@ -6,22 +15,22 @@
   const timePlay = document.getElementById("timeplay");
   let moments = [], playing = null;
 
+  // stampsOf — every dated moment on a cube: created, each face, its attestation
   function stampsOf(c) {
     const faces = Object.values(c.faces).filter(Boolean).map(f => f.at);
-    return [c.created, ...faces, c.validation && c.validation.at, c.attestation && c.attestation.at].filter(Boolean);
+    return [c.created, ...faces, c.attestation && c.attestation.at].filter(Boolean);
   }
 
-  // A cube as it stood at time t. Only what is dated can be undone: a face
-  // edited since shows only from that edit, because older wording is not kept.
+  // asOf — a cube as it stood at time t. Only what is dated can be undone: a
+  // face edited since shows only from that edit, because older wording is not
+  // kept. Status and score follow the same rule as serve.py's adapter.
   function asOf(c, t) {
     const by = item => (item && item.at && item.at > t ? null : item);
     const faces = Object.fromEntries(LENSES.map(l => [l, by(c.faces[l])]));
-    const validation = by(c.validation), attestation = by(c.attestation);
+    const attestation = by(c.attestation);
     const filled = LENSES.filter(l => faces[l] && !faces[l].pending).length;
-    const valid = validation && !validation.stale;
-    const status = attestation ? (attestation.retracted ? "retracted" : "attested")
-      : validation && validation.stale ? "stale" : filled === 5 && valid ? "validated" : "draft";
-    return { ...c, faces, validation, attestation, status, score: filled * .16 + (valid ? .2 : 0) };
+    const status = attestation ? (attestation.retracted ? "retracted" : "attested") : "draft";
+    return { ...c, faces, attestation, status, filled, score: filled / LENSES.length };
   }
 
   function setTime(index) {

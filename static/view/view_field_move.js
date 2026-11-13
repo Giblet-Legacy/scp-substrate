@@ -1,4 +1,13 @@
-// Part of the cube field. kg_view.py joins these inside one function.
+// view_field_move.js — moving around: crumbs, panels, pointer and keyboard input, and the window.cubeField API. Must be joined last.
+//
+// Function:
+//     One fragment of the cube field. serve.py joins the six view_field_*.js
+//     files, in the order world, form, hubs, draw, time, move, inside one
+//     function, so they share scope. Canvas 2D with its own 3D maths; no network.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
   // --- moving around -------------------------------------------------------
   const crumbs = document.getElementById("crumbs");
   const panel = document.getElementById("panel");
@@ -93,11 +102,6 @@
       card.addEventListener("click", () => goNode(n));
       panel.append(card);
     }
-    if (l.kind === "proposed" && window.cubeEdit) {
-      const decide = el("button", "hop", "Open in the grid to accept or reject");
-      decide.addEventListener("click", () => { document.getElementById("togrid").click(); open(l.a.c); });
-      panel.append(decide);
-    }
     panel.append(el("p", "facts", "Click a cube to open it. Esc or a click on empty space lets go."));
     panel.hidden = false;
   }
@@ -109,7 +113,7 @@
     shut.setAttribute("aria-label", "Back out");
     shut.addEventListener("click", back);
     panel.append(shut, el("h3", "", c.content), el("p", "id", c.id));
-    const facts = [LABEL[c.status], Math.round(c.score * 100) + "% complete", "standing " + c.standing.toFixed(2)];
+    const facts = [LABEL[c.status], `${c.filled} of ${LENSES.length} faces`];
     panel.append(el("p", "facts", facts.join(" · ")));
     const row = (lens, title, text, note) => {
       const b = el("button", "lens" + (text ? "" : " missing"));
@@ -125,8 +129,6 @@
       const f = c.faces[lens];
       panel.append(row(lens, lens, f && f.content, faceNote(f)));
     });
-    const v = c.validation;
-    panel.append(row("HUMAN", "HUMAN VALIDATION", v && (v.note || "Validated"), v ? (v.stale ? "stale, a face changed" : "by " + v.validator) : ""));
     if (c.source) panel.append(el("p", "facts", "Source: " + c.source));
     if (c.attestation) panel.append(el("p", "facts", c.attestation.retracted
       ? "Attestation retracted: " + c.attestation.retracted
@@ -143,11 +145,6 @@
         b.addEventListener("click", () => goLink(l));
         panel.append(b);
       });
-    }
-    if (window.cubeEdit) {
-      const edit = el("button", "hop", "Open in the grid to edit");
-      edit.addEventListener("click", () => { document.getElementById("togrid").click(); open(c); });
-      panel.append(edit);
     }
     panel.hidden = false;
   }

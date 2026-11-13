@@ -1,4 +1,13 @@
-// Part of the cube field. kg_view.py joins these inside one function.
+// view_field_draw.js — the camera, projection and per-frame drawing of cubes, face satellites, strands and labels.
+//
+// Function:
+//     One fragment of the cube field. serve.py joins the six view_field_*.js
+//     files, in the order world, form, hubs, draw, time, move, inside one
+//     function, so they share scope. Canvas 2D with its own 3D maths; no network.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
   // --- camera --------------------------------------------------------------
   const cam = { yaw: .6, pitch: .34, dist: 1300, t: [...world.c], toDist: 1300 };
   let W = 0, H = 0, F = 800;
@@ -86,19 +95,18 @@
 
   const dust = Array.from({ length: 170 }, (_, i) => [
     (rand(i, 1) - .5) * 4800, (rand(i, 2) - .5) * 4800, (rand(i, 3) - .5) * 4800]);
-  const normalize_time = s => String(s || "").replace("T", " ").replace("Z", "").substring(0, 19);
+  const normalise_time = s => String(s || "").replace("T", " ").replace("Z", "").substring(0, 19);
 
   const faceMap = n => {
     const out = {};
-    const cutoff = normalize_time(view.time);
+    const cutoff = normalise_time(view.time);
     LENSES.forEach(l => {
       const f = n.c.faces[l];
       if (!f || f.pending) return;
-      const filled = normalize_time(f.filled_at);
+      const filled = normalise_time(f.filled_at);
       if (cutoff && filled && filled > cutoff) return;
       out[l] = f.unread ? "unread" : "read";
     });
-    if (n.c.validation && !n.c.validation.stale) out.HUMAN = "read";
     return out;
   };
 
@@ -231,7 +239,7 @@
     if (you) {
       const dim = pulled ? .12 : inside ? .3 : 1;
       for (const n of nodes) {
-        const valid = n.c.validation && !n.c.validation.stale, amber = n.cluster.loose ? n.cluster.rgb : null;
+        const valid = n.c.status === "attested", amber = n.cluster.loose ? n.cluster.rgb : null;
         if (!shows(n.c) || (!valid && (!n.cluster.rigid || n.cluster.hub))) continue;
         const q = project(n.p);
         if (!q) continue;
@@ -290,7 +298,7 @@
         const sq = project(sat.p);
         if (!sq) return;
         const live = n.c.faces[sat.lens];
-        const present = sat.lens === "HUMAN" ? n.c.validation && !n.c.validation.stale : Boolean(live && !live.pending);
+        const present = Boolean(live && !live.pending);
         sat.q = sq;
         items.push({ type: "lens", sat, q: sq, d: sq.d, p: sat.p, size: n.r * .42 * n.open * (focus.lens === sat.lens ? 1.5 : 1),
                      ry: time * .5 + i, rx: time * .3 + i, alpha: n.open, present });
@@ -350,7 +358,7 @@
         });
     }
     if (focus.node) focus.node.sats.forEach(sat => {
-      if (sat.q) label(sat.lens === "HUMAN" ? "YOU" : sat.lens, { x: sat.q.x, y: sat.q.y + 26 + focus.node.r * .4 * sat.q.k }, 11, .9, 700);
+      if (sat.q) label(sat.lens, { x: sat.q.x, y: sat.q.y + 26 + focus.node.r * .4 * sat.q.k }, 11, .9, 700);
     });
     requestAnimationFrame(frame);
   }

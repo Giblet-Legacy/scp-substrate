@@ -1,68 +1,130 @@
-# SPEC — scp-substrate (Tier 1: SCP Substrate) — DRAFT
+# SPEC — scp-substrate (Tier 1: SCP Substrate)
 
-SPEC.md — draft specification. NOT FROZEN.
+SPEC.md — the specification for SCP Substrate v1.0.0.
 
 Function:
-    Records the target behaviour for SCP Substrate v1.0.0. This is a
-    DRAFT. It exists so the 6-face decision (Q1 in NOTES.md) can be
-    resolved before any backend code is written.
+    Records the frozen behaviour of SCP Substrate v1.0.0: a read-only
+    viewer that renders P9 Substrate claims as a 3D field of six-faced
+    cubes. Behaviour not written here is not promised.
 
 Tier:      Tier 1 — Consumer
-Depends:   P8 Store (SQLite), P9 Substrate (claims/evidence)
+Depends:   P8 Store (SQLite), P9 Substrate (claims/evidence), read only
 Consumed:  The operator (visual exploration), The Legacy
-Version:   DRAFT — not yet v1.0.0
+Version:   SPEC 1.0.0
 Licence:   MSL-1.0
 Author:    James Gilbert (Giblets Forge)
 
-## 1. Six faces, one per cube side (DECIDED)
+## 1. Six faces, one per cube side
 
-The old frontend rendered each cube with 6 painted sides — but its
-6th side was HUMAN (attestation), not UNKNOWN. P13 DataCube defines
-6 faces (FACT, COUNTER, OPINION, FICTION, CONTEXT, UNKNOWN) and
-explicitly states that human validation is NEVER a face — it is a
-separate signed attestation.
+Every cube shows P13 DataCube's six faces, one per side: FACT,
+COUNTER, OPINION, FICTION, CONTEXT, UNKNOWN. UNKNOWN (the Dream
+Space) is a cool grey, rgb(130, 130, 140), on the side that was HUMAN
+in the harvested frontend.
 
-Decision: **six faces, one per cube side.** UNKNOWN replaces HUMAN
-on the 6th side. Human attestation moves to the existing gold glow
-(CSS --seal).
+Human attestation is never a face (P13 §2). It is drawn as the gold
+glow (CSS `--seal`) on the cube, and a green strand from the centre.
+The harvested build's separate "validation" concept is removed: in
+P13, human validation *is* the signed attestation.
 
-Full rationale, exact diffs, and rejected alternatives are recorded
-in HARVEST_DIFF.md (this repo).
+Rationale and the full list of frontend edits: HARVEST_DIFF.md.
 
-## 2. What v1.0.0 will look like (once Q1 is resolved)
+## 2. Server
 
-- Python HTTP server, stdlib `http.server`. No Flask, no FastAPI.
-- Serves `static/view/` (the harvested frontend).
-- Exposes a read-only JSON API:
-  - `GET /api/claims` — all active claims, adapted to the frontend's
-    expected data shape
-  - `GET /api/claims/<id>` — one claim with evidence
-  - `GET /api/health` — probes P8/P9 SQLite
-- Reads from `FORGE_HOME/forge.db` (same DB The Cockpit writes to).
-- Zero writes. Browser cannot mutate the substrate.
-- Single-operator, localhost only. No auth in v1.
+- `serve.py`, Python standard library only (`http.server`).
+- Binds 127.0.0.1 only. Default port 8085 (`--port`).
+- Database: `--db PATH`, else `$FORGE_HOME/forge.db`, else
+  `~/.forge/forge.db`.
+- Opens SQLite with `mode=ro`. A missing file is reported, never
+  created. GET and HEAD only; every other method returns 405 with
+  `Allow: GET, HEAD`.
+- Static files and the template are read on each request.
 
-## 3. Known limitations (will appear in v1.0.0 spec)
+### 2.1 Endpoints
 
-- Read-only. All writes via The Cockpit.
+| Route | Answer |
+| --- | --- |
+| `GET /` | The cube field page with data injected (§4) |
+| `GET /<file>` | A file directly inside `static/view/`, as is. Nothing outside it. |
+| `GET /api/health` | 200 `{status: "ok", db, read_only, claims, active, evidence}` when both P9 tables read; 503 `{status: "error", db, error}` otherwise |
+| `GET /api/claims` | Array of every active claim (`is_active = 1`), oldest first, adapted (§3) |
+| `GET /api/claims/<id>` | One claim, active or superseded, adapted, plus `capsule` and `evidence`; 404 if absent |
+
+Database errors on the claim routes and `/` return 503.
+
+## 3. Adapting a P9 claim
+
+Each `claims` row, with its `capsule` parsed as JSON, becomes:
+
+- **P9 columns, unchanged:** `claim_id` (also `id`), `signer`,
+  `is_active`, `superseded_by`, `created_at` (also `created`).
+- **The claim:** `subject`, `predicate`, `object`; `content` is the
+  capsule's `content` string if present, else "subject predicate
+  object".
+- **Faces:** `faces` has all six keys. A face is
+  `{content, at, filled_at}` (both times = `created_at`) or `null`.
+  Content is read from, in order: a `faces` object in the capsule,
+  top-level face keys (a stored P13 cube), then the capsule's `face`
+  tag, which fills that one face with the claim's sentence. Empty or
+  non-string content is `null` (P13: empty faces are None).
+- **`filled`** = faces present; **`score`** = filled / 6.
+- **Attestation:** the capsule's `attestation` object, else the
+  latest evidence capsule with `kind: "attestation"`. Normalised to
+  `{source, note, at, retracted}`; `source` is `by`, else `source`,
+  else the signature's `key_id`.
+- **`status`:** `attested`, `retracted` (attestation has a
+  `retracted` string), or `draft`.
+- **`evidence_count`:** evidence rows for the claim.
+- **Layout fields P9 does not have:** `group` = "Claims", `tags` = the
+  capsule's `tags` list, else `[subject]`; `source` = "Signed by"
+  and the signer; `standing` = 0; `neighbours` = [].
+
+A row whose capsule is not a JSON object is skipped and named on
+stderr. Unparseable evidence is skipped.
+
+## 4. The page
+
+`serve.py` joins `view_field_{world,form,hubs,draw,time,move}.js`, in
+that order, inside one function, and fills `view_template.html`'s
+`/*STYLE*/ /*GRID*/ /*FIELD*/ /*BAR*/` slots, plus `view_grid.js`'s
+data slots: `CUBES`, `MODES` (`{}`), `USER` ("You"), `HUBS` (`[]`),
+`THINGS` (`{}`), and `LENSES` (the six faces). Each fill is one
+regex pass, so injected text is never read as a slot. Injected JSON
+escapes `<`, `>`, `&`, U+2028 and U+2029.
+
+The page has no forms, no unlock and no write calls.
+
+## 5. Decisions on the open questions
+
+- **Q1 Faces:** §1.
+- **Q2 Time axis:** each cube's `created_at`, and the `at` of its
+  faces and attestation. Superseded claims are not shown in v1.
+- **Q3 Links:** none stored. Claims cluster by subject (their
+  default tag), and the field draws its own threads within a
+  cluster. No `claim_links` table.
+- **Q4 Port and database:** §2.
+
+## 6. Known limitations (v1.0.0)
+
+- Read-only. All writes go through The Cockpit.
 - No auth. Localhost only.
-- No cross-substrate linking.
-- No multi-user.
-- Time slider source TBD (see NOTES Q2).
-- Links between claims TBD (see NOTES Q3).
+- No cross-substrate linking. No multi-user.
+- Signatures are not verified on read (P9 v2 `verify=True` is not
+  called: this consumer reads SQLite directly).
+- Where an attestation lives is not yet defined by P9 or P13. §3's
+  two sources are this consumer's convention until it is.
+- No trust weighting (`standing` is always 0) and no P13 inspection
+  grade shown.
+- Entity/subject hubs (`THINGS`, `HUBS`) and cluster modes (`MODES`)
+  stay in the frontend but are always empty.
+- Superseded history is reachable only through
+  `/api/claims/<id>`, not the field.
 
 ---
 
 ## Document control
 
-- Status: DRAFT. Not frozen.
-- v1.0.0 requires:
-  1. Q1 (6-face visual) resolved. — RESOLVED (six faces, one per
-     side; UNKNOWN on the 6th; attestation as gold glow). See
-     HARVEST_DIFF.md.
-  2. Frontend patch applied (view_field_world.js, ~15 lines).
-  3. Backend server written (stdlib http.server, read-only JSON).
-  4. Tests written and passing.
-  5. Independent verification (read-only JSON matches P9's claims).
-- When all are met, this becomes SPEC v1.0.0 and the repo becomes
-  frozen.
+- Status: FROZEN at 1.0.0. Verified by `test_substrate.py`
+  (including claims written by P9 `substrate_v2` when the sibling
+  layer is present).
+- Changes after freeze are new layers (Immutable Rule), recorded in a
+  new SPEC version.

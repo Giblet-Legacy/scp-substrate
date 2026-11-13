@@ -1,4 +1,13 @@
-// Part of the cube field. kg_view.py joins these inside one function.
+// view_field_hubs.js — hubs: entities drawn as smaller dots out from the centre with their parts circling them (empty until THINGS/HUBS are supplied).
+//
+// Function:
+//     One fragment of the cube field. serve.py joins the six view_field_*.js
+//     files, in the order world, form, hubs, draw, time, move, inside one
+//     function, so they share scope. Canvas 2D with its own 3D maths; no network.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
   // Entities you are building sit out from you as smaller green dots, with
   // their parts circling them and each part's claims gathered round it
   // The ring of hubs widens as hubs are added, so their parts never overlap
@@ -124,7 +133,7 @@
     const who = h.builders.length ? ` · ${h.builders.join(", ")} is building it` : "";
     panel.append(el("p", "facts", (h.kind ? h.kind[0].toUpperCase() + h.kind.slice(1) : "Entity") + who));
     panel.append(el("p", "facts", `${all.length} claims · ${count(c => c.score > 0)} started · `
-      + `${count(c => c.validation && !c.validation.stale)} validated · ${count(c => c.status === "attested")} attested`));
+      + `${count(c => c.status === "attested")} attested`));
     panel.append(el("p", "facts", "Parts"));
     h.parts.forEach(p => {
       const card = el("button", "lens");

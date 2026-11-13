@@ -1,20 +1,27 @@
-// The cube field: you at the centre, clusters that shape themselves, cubes, and their lenses.
-// Canvas 2D with its own small 3D maths, so the page needs no network.
+// view_field_world.js — the world: face colours and cube geometry, clusters by group and topic, links, physics, and update() for new data.
+//
+// Function:
+//     One fragment of the cube field. serve.py joins the six view_field_*.js
+//     files, in the order world, form, hubs, draw, time, move, inside one
+//     function, so they share scope. Canvas 2D with its own 3D maths; no network.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
   const canvas = document.getElementById("field");
   const ctx = canvas.getContext("2d");
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const RGB = {
     FACT: [84, 146, 240], COUNTER: [240, 104, 96], OPINION: [242, 178, 52],
-    FICTION: [168, 132, 238], CONTEXT: [62, 190, 180], HUMAN: [94, 198, 112],
+    FICTION: [168, 132, 238], CONTEXT: [62, 190, 180], UNKNOWN: [130, 130, 140],
   };
   const SIDES = [
     ["FACT", [4, 5, 6, 7]], ["CONTEXT", [1, 0, 3, 2]], ["COUNTER", [5, 1, 2, 6]],
-    ["FICTION", [0, 4, 7, 3]], ["HUMAN", [7, 6, 2, 3]], ["OPINION", [0, 1, 5, 4]],
+    ["FICTION", [0, 4, 7, 3]], ["UNKNOWN", [7, 6, 2, 3]], ["OPINION", [0, 1, 5, 4]],
   ];
   const CORNERS = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
   const EDGES = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
-  const OUT = { FACT: [0,0,1], CONTEXT: [0,0,-1], COUNTER: [1,0,0], FICTION: [-1,0,0], HUMAN: [0,1,0], OPINION: [0,-1,0] };
-  const NAMES = { HUMAN: "YOU" };
+  const OUT = { FACT: [0,0,1], CONTEXT: [0,0,-1], COUNTER: [1,0,0], FICTION: [-1,0,0], UNKNOWN: [0,1,0], OPINION: [0,-1,0] };
 
   const hash = text => [...text].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
   const rand = (seed, n) => { const x = Math.sin(seed * 12.9898 + n * 78.233) * 43758.5453; return x - Math.floor(x); };
@@ -52,7 +59,7 @@
           p: add(cluster.home, [rand(seed, 1) * 80 - 40, rand(seed, 2) * 80 - 40, rand(seed, 3) * 80 - 40]),
           v: [0, 0, 0], ry: rand(seed, 4) * 6, rx: rand(seed, 5) * 6, spin: .1 + rand(seed, 6) * .2,
         };
-        node.sats = [...LENSES, "HUMAN"].map(lens => ({ node, lens, ry: rand(seed, 7), p: node.p }));
+        node.sats = [...LENSES].map(lens => ({ node, lens, ry: rand(seed, 7), p: node.p }));
         cluster.nodes.push(node);
         nodes.push(node);
       });
@@ -134,7 +141,7 @@
   }));
   nodes.forEach(n => {
     const other = nodes.find(m => m.cluster !== n.cluster && m.c.group === n.c.group
-      && m.c.tags.some(t => n.c.tags.includes(t) && t !== "pca9685" && t !== "hardware"));
+      && m.c.tags.some(t => n.c.tags.includes(t)));
     if (other) link(n, other, "bridge");
   });
 
@@ -298,7 +305,7 @@
       const n = { c, cluster: home, seed, sats: [], open: 0, hover: 0, r: 11 + c.score * 6, trail: [],
                   p: add(world.c, [Math.cos(a) * far, -far * .5, Math.sin(a) * far]), v: [0, 0, 0],
                   ry: rand(seed, 4) * 6, rx: rand(seed, 5) * 6, spin: .3 };
-      n.sats = [...LENSES, "HUMAN"].map(lens => ({ node: n, lens, ry: rand(seed, 7), p: n.p }));
+      n.sats = [...LENSES].map(lens => ({ node: n, lens, ry: rand(seed, 7), p: n.p }));
       home.nodes.push(n);
       tagHome.set(n, home);
       nodes.push(n);

@@ -1,4 +1,13 @@
-// Part of the cube field. kg_view.py joins these inside one function.
+// view_field_form.js — cluster forms: each cluster's outline drawn from its shortest links.
+//
+// Function:
+//     One fragment of the cube field. serve.py joins the six view_field_*.js
+//     files, in the order world, form, hubs, draw, time, move, inside one
+//     function, so they share scope. Canvas 2D with its own 3D maths; no network.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
   // --- cluster forms ----------------------------------------------------------
   // Each cluster grows its own form: its cubes joined by their shortest links, with
   // a soft skin around them. The shape comes from where the cubes are, so it changes

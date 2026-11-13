@@ -1,4 +1,12 @@
-// The top bar: view switching, filters and cluster modes.
+// view_bar.js — the top bar: view switching, filters, cluster modes and the key.
+//
+// Function:
+//     Wires the field's chips and search to window.cubeField and draws the
+//     six-face key. Read-only.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
 (() => {
   const root = document.getElementById("root"), grid = document.getElementById("grid");
   const swap = showGrid => {
@@ -39,10 +47,10 @@
     return chip;
   });
   const key = document.getElementById("key");
-  [...LENSES, "HUMAN"].forEach(lens => {
+  LENSES.forEach(lens => {
     const swatch = el("i");
     swatch.style.background = `var(--${VAR[lens]})`;
-    key.append(swatch, document.createTextNode(lens === "HUMAN" ? "You" : lens[0] + lens.slice(1).toLowerCase()));
+    key.append(swatch, document.createTextNode(lens[0] + lens.slice(1).toLowerCase()));
   });
-  key.append(document.createTextNode("   ·   Green centre: you   ·   Green strand: a cube you validated   ·   Foundations around you: orange safety, pink security, blue preferences   ·   Green ring: what defines you   ·   Green glow: a claim about you   ·   Small green dot: something you are building, its parts circling it; click it for an overview   ·   Gold glow: attested   ·   Hollow: missing   ·   Dim: unread   ·   Thread colour: the lens two cubes share   ·   Dashed: a suggested link, not accepted   ·   Click a thread to see why two cubes are linked   ·   Click to go in, Esc to back out, scroll to zoom"));
+  key.append(document.createTextNode("   ·   Green centre: you   ·   Green strand: a claim you attested   ·   Gold glow: attested (human attestation, never a face)   ·   Grey side: UNKNOWN, an open question   ·   Hollow: face not inspected   ·   Claims cluster by subject   ·   Click to go in, Esc to back out, scroll to zoom"));
 })();

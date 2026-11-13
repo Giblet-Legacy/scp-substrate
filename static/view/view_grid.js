@@ -1,21 +1,32 @@
-// The grid view, and the data every view shares.
+// view_grid.js — the grid view, and the data every view shares.
+//
+// Function:
+//     Holds the data serve.py injects (CUBES, MODES, USER, HUBS, THINGS,
+//     LENSES) and renders the flat grid of cubes. Each cube has the six
+//     P13 faces, one per side; human attestation is the gold glow, never
+//     a side. Read-only: nothing here writes back to the server.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
 const CUBES = /*CUBES*/[];
 const MODES = /*MODES*/{};
 const USER = /*USER*/"You";
 const HUBS = /*HUBS*/[];
 // Every entity and subject, each with its own place in the grid
 const THINGS = /*THINGS*/{};
-const LENSES = ["FACT", "COUNTER", "OPINION", "FICTION", "CONTEXT"];
-const VAR = { FACT: "fact", COUNTER: "counter", OPINION: "opinion", FICTION: "fiction", CONTEXT: "context", HUMAN: "human" };
-const LABEL = { attested: "Attested", validated: "Validated", stale: "Validation stale", retracted: "Attestation retracted", draft: "Needs you" };
-const POSE = { FACT: [-18, -24], COUNTER: [-18, -114], CONTEXT: [-18, -204], FICTION: [-18, 66], OPINION: [-72, -24], HUMAN: [72, -24] };
+// The six P13 faces, injected by serve.py; the default keeps the page usable without it
+const LENSES = /*LENSES*/["FACT", "COUNTER", "OPINION", "FICTION", "CONTEXT", "UNKNOWN"];
+const VAR = { FACT: "fact", COUNTER: "counter", OPINION: "opinion", FICTION: "fiction", CONTEXT: "context", UNKNOWN: "unknown" };
+const LABEL = { attested: "Attested", retracted: "Attestation retracted", draft: "Not attested" };
+const POSE = { FACT: [-18, -24], COUNTER: [-18, -114], CONTEXT: [-18, -204], FICTION: [-18, 66], OPINION: [-72, -24], UNKNOWN: [72, -24] };
 // Foundational cubes come in three kinds, each with its own colour. A cube goes
 // to the first kind its tags name.
 const FOUNDATIONS = [["safety", "Safety", "255,140,26"], ["security", "Security", "236,72,153"],
                      ["preference", "Preferences", "56,189,248"]];
 const foundationOf = c => !c.tags.includes("foundational") ? null
   : FOUNDATIONS.find(([kind]) => c.tags.includes(kind)) || FOUNDATIONS[0];
-const FILTERS = [["all", "All"], ["attested", "Attested"], ["validated", "Validated"], ["needs", "Needs you"], ["drafts", "Drafts to check"], ["overlaps", "Overlaps"], ["foundational", "Foundational"]];
+const FILTERS = [["all", "All"], ["attested", "Attested"], ["needs", "Not attested"], ["unknown", "Open questions"], ["foundational", "Foundational"]];
 
 const el = (tag, cls, text) => {
   const node = document.createElement(tag);
@@ -30,28 +41,29 @@ const quoted = (c, n) => `“${c ? shorten(c.content.replace(/\.$/, ""), n) : "?
 const linkSentence = (a, word, b, n = 70) => `${quoted(a, n)} ${word} ${quoted(b, n)}`;
 const faceNote = f => !f ? "" : f.pending ? `draft by ${f.drafted_by || "a model"}, not accepted` : f.unread ? "accepted without reading" : "";
 
+// cubeNode — a CSS 3D cube with one side per face; the gold glow marks attestation
 function cubeNode(c, size) {
   const stage = el("div", "stage" + (c.status === "attested" ? " sealed" : ""));
   stage.style.setProperty("--s", size + "px");
   const cube = el("div", "cube");
-  for (const lens of [...LENSES, "HUMAN"]) {
-    const face = lens === "HUMAN" ? c.validation : c.faces[lens];
-    const live = lens === "HUMAN" ? c.validation && !c.validation.stale : Boolean(face && !face.pending);
+  for (const lens of LENSES) {
+    const face = c.faces[lens];
+    const live = Boolean(face && !face.pending);
     const side = el("div", `side f-${lens} ` + (live ? `fill-${lens}` : "empty"));
-    if (live && lens !== "HUMAN" && face.unread) side.classList.add("unread");
-    if (size > 100) side.textContent = lens === "HUMAN" ? "YOU" : lens;
+    if (live && face.unread) side.classList.add("unread");
+    if (size > 100) side.textContent = lens;
     cube.append(side);
   }
   stage.append(cube);
   return stage;
 }
 
+// matches — whether a cube passes the grid's filter, tag, entity and search
 function matches(c) {
-  if (state.filter === "needs" && ["attested", "validated"].includes(c.status)) return false;
-  if (state.filter === "drafts" && !Object.values(c.faces).some(f => f && f.pending)) return false;
-  if (state.filter === "overlaps" && !(c.overlaps || []).length) return false;
+  if (state.filter === "needs" && c.status === "attested") return false;
+  if (state.filter === "unknown" && !c.faces.UNKNOWN) return false;
   if (state.filter === "foundational" && !c.tags.includes("foundational")) return false;
-  if (["attested", "validated"].includes(state.filter) && c.status !== state.filter) return false;
+  if (state.filter === "attested" && c.status !== "attested") return false;
   if (state.tag && !c.tags.includes(state.tag)) return false;
   if (state.about && !isAbout(c, state.about)) return false;
   if (state.query) {
@@ -61,15 +73,16 @@ function matches(c) {
   return true;
 }
 
+// card — one cube in the grid: the cube, a six-face strip, the claim and its status
 function card(c) {
   const found = foundationOf(c);
   const button = el("button", "card" + (found ? " foundational" : ""));
   if (found) button.style.setProperty("--found", `rgb(${found[2]})`);
   button.setAttribute("aria-label", `${c.content} ${LABEL[c.status]}`);
   const strip = el("div", "strip");
-  for (const lens of [...LENSES, "HUMAN"]) {
-    const face = lens === "HUMAN" ? c.validation : c.faces[lens];
-    const live = lens === "HUMAN" ? c.validation && !c.validation.stale : Boolean(face && !face.pending);
+  for (const lens of LENSES) {
+    const face = c.faces[lens];
+    const live = Boolean(face && !face.pending);
     const bit = el("i", live ? (face.unread ? "unread" : "") : "off");
     bit.style.setProperty("--c", `var(--${VAR[lens]})`);
     bit.title = lens;
@@ -190,7 +203,7 @@ function open(c) {
 
   const right = el("div", "right");
   right.append(el("h3", "", c.content), el("p", "id", c.id));
-  const facts = [LABEL[c.status], Math.round(c.score * 100) + "% complete", "standing " + c.standing.toFixed(2)];
+  const facts = [LABEL[c.status], `${c.filled} of ${LENSES.length} faces`];
   if (c.source) facts.push(c.source);
   if (foundationOf(c)) facts.unshift(`Foundational ${foundationOf(c)[1].toLowerCase()}: read each face and write your own note`);
   right.append(el("p", "facts", facts.join(" · ")));
@@ -209,9 +222,6 @@ function open(c) {
     const f = c.faces[lens];
     right.append(row(lens, lens, f && f.content, faceNote(f)));
   }
-  const v = c.validation;
-  right.append(row("HUMAN", "HUMAN VALIDATION", v && (v.note || "Validated"),
-    v ? (v.stale ? "stale, a face changed" : "by " + v.validator) : ""));
   if (c.attestation) {
     const a = c.attestation;
     right.append(el("p", "facts", a.retracted ? "Attestation retracted: " + a.retracted : "Attested by " + a.source + (a.note ? ". " + a.note : "")));
@@ -255,7 +265,6 @@ function open(c) {
     right.append(b);
   });
   body.append(left, right);
-  if (window.cubeEdit) cubeEdit.decorate(right, c);
   const dialog = document.getElementById("detail");
   if (!dialog.open) dialog.showModal();
 }
@@ -268,9 +277,8 @@ function renderStats() {
   const n = s => CUBES.filter(c => c.status === s).length;
   const stats = document.getElementById("stats");
   stats.replaceChildren();
-  [[CUBES.length, "cubes"], [n("attested"), "attested"], [n("validated"), "validated, not attested"],
-   [CUBES.length - n("attested") - n("validated"), "need you"],
-   [CUBES.reduce((t, c) => t + Object.values(c.faces).filter(f => f && f.unread && !f.pending).length, 0), "faces not read"]]
+  [[CUBES.length, "cubes"], [n("attested"), "attested"], [CUBES.length - n("attested"), "not attested"],
+   [CUBES.filter(c => c.faces.UNKNOWN).length, "open questions"]]
     .forEach(([value, label]) => {
       const s = el("div", "stat");
       s.append(el("b", "", value), el("span", "", label));
@@ -279,13 +287,17 @@ function renderStats() {
 }
 function setupControls() {
   const legend = document.getElementById("legend");
-  [...LENSES, "HUMAN"].forEach(lens => {
+  LENSES.forEach(lens => {
     const item = el("span");
     const swatch = el("i");
     swatch.style.background = `var(--${VAR[lens]})`;
-    item.append(swatch, document.createTextNode(lens === "HUMAN" ? "Your validation" : lens[0] + lens.slice(1).toLowerCase()));
+    item.append(swatch, document.createTextNode(lens[0] + lens.slice(1).toLowerCase()));
     legend.append(item);
   });
+  const seal = el("span"), glow = el("i");
+  glow.style.background = "var(--seal)";
+  seal.append(glow, document.createTextNode("Gold glow: attested"));
+  legend.append(seal);
 
   const controls = document.getElementById("controls");
   const search = el("input");
@@ -305,16 +317,6 @@ function setupControls() {
   });
   chips.forEach(([b, v]) => b.setAttribute("aria-pressed", v === "all"));
   window.gridFilter = value => chips.find(([, v]) => v === value)[0].click();
-  const by = el("button", "chip", "Group by source");
-  by.title = "Switch between grouping by source and by entity and subject";
-  by.addEventListener("click", () => {
-    state.by = state.by === "group" ? "place" : "group";
-    by.textContent = state.by === "group" ? "Group by source" : "Group by entity & subject";
-    by.setAttribute("aria-pressed", state.by === "place");
-    draw();
-  });
-  by.setAttribute("aria-pressed", "false");
-  controls.append(by);
   const seen = t => CUBES.filter(c => c.tags.includes(t)).length;
   const tags = [...new Set(CUBES.flatMap(c => c.tags))].filter(t => seen(t) >= 3).sort();
   tags.forEach(tag => {
