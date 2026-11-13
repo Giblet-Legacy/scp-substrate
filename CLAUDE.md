@@ -19,6 +19,11 @@ are new layers and a new SPEC version, not edits to v1 behaviour.
 v2: reads through P9 `substrate_v3` with verification and follows P9
 SPEC_V3 §3 for attestations. `serve.py` stays frozen.
 
+## v3 layer
+`serve_v3.py` (SPEC_V3.md, built, not frozen) is the entry point from
+v3: v2 plus ISO 8601 times, so attested claims no longer stop the
+field drawing. Run `python serve_v3.py`.
+
 ## The Immutable Rule
 Never rewrite a primitive. Add a layer. This repo consumes
 primitives; it never edits them.
