@@ -20,7 +20,7 @@ v2: reads through P9 `substrate_v3` with verification and follows P9
 SPEC_V3 §3 for attestations. `serve.py` stays frozen.
 
 ## v3 layer
-`serve_v3.py` (SPEC_V3.md, built, not frozen) is the entry point from
+`serve_v3.py` (SPEC_V3.md, frozen 3.0.0) is the entry point from
 v3: v2 plus ISO 8601 times, so attested claims no longer stop the
 field drawing. Run `python serve_v3.py`.
 

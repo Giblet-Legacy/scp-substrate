@@ -3,4 +3,6 @@
 
 # 2.0.0 — serve_v2.py frozen (SPEC_V2.md: verified reads via P9 substrate_v3). Tests pass (29/29).
 
-2.0.0
+# 3.0.0 — serve_v3.py frozen (SPEC_V3.md: ISO times so attested claims draw). Tests pass (33/33), laptop and S24.
+
+3.0.0

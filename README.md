@@ -15,7 +15,7 @@ Author:   James Gilbert (Giblets Forge)
 Status:   1.0.0 — FROZEN (serve.py). v2 (serve_v2.py, SPEC_V2.md):
           verified reads via P9 substrate_v3, frozen at 2.0.0.
           v3 (serve_v3.py, SPEC_V3.md): ISO times, so attested claims
-          draw; built, not frozen. Run `python serve_v3.py`.
+          draw; frozen at 3.0.0. Run `python serve_v3.py`.
 
 ## Run it
 

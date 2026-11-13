@@ -50,3 +50,4 @@ P9 substrate (claims/evidence). Old capsules are dead.
 - Per-function headers inside the harvested JS (files have headers).
 - Freeze serve_v3 at 3.0.0? Built and green on the laptop (33/33); the
   field checked in headless Edge. Raised 2026-11-13. Owner: James.
+  **Resolved 2026-11-13 — James: "freeze".** Laptop and S24.

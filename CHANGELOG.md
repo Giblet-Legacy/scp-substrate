@@ -6,26 +6,26 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ### Good
 
-- `SPEC_V3.md`, `test_serve_v3.py` (4 tests, run red first) and `serve_v3.py`: every time the field receives is an ISO 8601 string. Fixes the field drawing nothing once any claim was attested (`TypeError: t.slice is not a function`): P9 SPEC_V3 §3 stores the seal time in epoch seconds and v2 passed the number through. Checked in headless Edge: no console errors, 8 cubes drawn, the attested claim's green strand shown. 33/33 pass.
-- Built as a layer: serve.py, serve_v2.py and static/view/ untouched. Not frozen (NOTES).
+- (none)
 
 ### Bad
 
-- v2 (frozen) still breaks the field on any attested claim; run serve_v3. v2's tests checked the API, never the page's JavaScript; v3's test 4 runs the frontend's own stampsOf in node.
+- (none)
 
 ### Ugly
 
 - (none)
 
-## [Unreleased]
+## [v3.0.0] — 2026-11-13 — FROZEN
 
 ### Good
 
-- (none)
+- `SPEC_V3.md`, `test_serve_v3.py` (4 tests, run red first) and `serve_v3.py`: every time the field receives is an ISO 8601 string. Fixes the field drawing nothing once any claim was attested (`TypeError: t.slice is not a function`): P9 SPEC_V3 §3 stores the seal time in epoch seconds and v2 passed the number through. Checked in headless Edge: no console errors, 8 cubes drawn, the attested claim's green strand shown. 33/33 pass.
+- Built as a layer: serve.py, serve_v2.py and static/view/ untouched. Frozen at 3.0.0 (James: "freeze", 2026-11-13); confirmed on the S24 by James, 2026-11-13.
 
 ### Bad
 
-- (none)
+- v2 (frozen) still breaks the field on any attested claim; run serve_v3. v2's tests checked the API, never the page's JavaScript; v3's test 4 runs the frontend's own stampsOf in node.
 
 ### Ugly
 
