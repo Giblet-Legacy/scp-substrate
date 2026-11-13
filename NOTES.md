@@ -42,7 +42,7 @@ P9 substrate (claims/evidence). Old capsules are dead.
 - ~~Where attestations live.~~ Done in v2 (SPEC_V2.md): defined by P9
   SPEC_V3 §3 (evidence of kind `attestation` / `refusal`).
 - ~~Signature verification on read.~~ Done in v2 via substrate_v3.
-- Freeze serve_v2 at 2.0.0? **Resolved 2026-11-13 — James: "freeze all".** Frozen on the laptop run; the S24 run is still to be confirmed. Built and green on the laptop (29/29). Not
+- Freeze serve_v2 at 2.0.0? **Resolved 2026-11-13 — James: "freeze all".** Frozen on the laptop run; confirmed on the S24 by James, 2026-11-13. Built and green on the laptop (29/29). Not
   yet run on the S24. Raised 2026-11-13. Owner: James.
 - P13 inspection grade (CRYSTALLINE … SPARSE) in the panel.
 - Trust (`standing`) from P10/P11.
