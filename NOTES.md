@@ -57,12 +57,15 @@ P9 substrate (claims/evidence). Old capsules are dead.
 - Freeze serve_v5 at 5.0.0? Subjects orbit you (SPEC_V5.md). Built and
   green on the laptop (44/44). Not yet run on the S24. Raised 2026-11-13.
   Owner: James.
+  **Resolved 2026-11-14 — James: "phone worked freeze please".** Frozen; tests pass on the laptop and the S24.
 - Freeze serve_v6 at 6.0.0? Dependencies as your own links (SPEC_V6.md).
   Built and green on the laptop (47/47). Zoomed out, threads are still
   dim (the frozen frontend scales them to 35%); stronger drawing needs a
   frontend layer. Raised 2026-11-14. Owner: James.
   Update 2026-11-14: static/view_v2 is that frontend layer (3D orbs,
   links at full strength); the freeze question covers both.
+  **Resolved 2026-11-14 — James: "phone worked freeze please".** Frozen; tests pass on the laptop and the S24.
 - Freeze serve_v7 and static/view_v3 at 7.0.0? #entity links open the
   orb; orb names never overlap (SPEC_V7.md). Built and green on the
   laptop (54/54). Raised 2026-11-14. Owner: James.
+  **Resolved 2026-11-14 — James: "phone worked freeze please".** Frozen; tests pass on the laptop and the S24.

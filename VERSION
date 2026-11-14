@@ -7,4 +7,10 @@
 
 # 4.0.0 — serve_v4.py frozen (SPEC_V4.md: keyword clusters, a subject is the unit). 39/39. Tests pass on the laptop; S24 run to be confirmed.
 
-4.0.0
+# 5.0.0 — serve_v5.py frozen (SPEC_V5.md: you at the centre, subjects as orbs, dependency threads).
+
+# 6.0.0 — serve_v6.py + static/view_v2 frozen (SPEC_V6.md: your links at full strength, orbs moving freely in 3D).
+
+# 7.0.0 — serve_v7.py + static/view_v3 frozen (SPEC_V7.md: #entity links open the orb, names never overlap). 54/54. Tests pass on the laptop and the S24 (4.0.0 confirmed on the S24 in the same run).
+
+7.0.0

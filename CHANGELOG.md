@@ -6,6 +6,20 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ### Good
 
+- (none)
+
+### Bad
+
+- (none)
+
+### Ugly
+
+- (none)
+
+## [v7.0.0 (with v5.0.0 and v6.0.0)] — 2026-11-14 — FROZEN
+
+### Good
+
 - `SPEC_V7.md`, `serve_v7.py`, `static/view_v3` (a copy of view_v2, which
   is untouched), `test_serve_v7.py` (6 tests, run red first against a
   plain copy of view_v2, in headless Edge): a link to one orb
