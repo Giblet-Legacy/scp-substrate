@@ -32,6 +32,14 @@ v4: v3 plus a "Keywords" cluster mode where a subject is the unit.
 `serve_v5.py` (SPEC_V5.md, built, not frozen): the person entity at the
 centre, subjects as orbs with their claims, "depends on" threads.
 
+## Frontend layers
+`static/view/` is frozen with v1. `static/view_v2/` (SPEC_V6.md §3, built,
+not frozen) is a copy with 3D orbs, full-strength links and single orb
+names; serve_v6 renders from it. A further change is a view_v3, not an edit.
+`static/view_v3/` (SPEC_V7.md, built, not frozen) is view_v2 with #entity
+links that open the orb and names that never overlap; serve_v7 renders
+from it. Run `python serve_v7.py`.
+
 ## The Immutable Rule
 Never rewrite a primitive. Add a layer. This repo consumes
 primitives; it never edits them.

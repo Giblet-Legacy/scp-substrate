@@ -6,6 +6,30 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ### Good
 
+- `SPEC_V7.md`, `serve_v7.py`, `static/view_v3` (a copy of view_v2, which
+  is untouched), `test_serve_v7.py` (6 tests, run red first against a
+  plain copy of view_v2, in headless Edge): a link to one orb
+  (`#entity:<id>`) opens it with its panel instead of a blank page (it
+  asked for an "Entities" mode v5+ never sends); orb names are placed
+  nearest first and a name that would land on another waits until its
+  orb moves clear, so the field reads on a phone. 54/54 pass. Built on
+  James's delegation ("take a bunch of screenshots and report", "yes").
+  Not frozen (NOTES).
+- `SPEC_V6.md`, `serve_v6.py`, `test_serve_v6.py` (3 tests; written with the
+  code, not run red first): "depends on" claims become the frozen
+  frontend's neighbour links (James: "links together are weak"): the
+  strongest thread, drawn in every view, explained as "You linked these:
+  ... depends on ... The reason given: <FACT>" instead of "a match on
+  words, so it can be a coincidence". No server "All lenses" view; the
+  field opens on "Tags". Built, not frozen (NOTES).
+- `static/view_v2`, a frontend layer (a copy of the frozen static/view,
+  which is untouched; James: "move freely and let natural clusters form
+  ... 360 degree movement"): orbs are bodies moving in 3D round you,
+  pushed apart, held at orbit distance and pulled together by your
+  links, turning slowly on a tilted axis, so related subjects cluster
+  (datacube with rules; trust, weight and the Leighton Engine; ledger,
+  HAL, envelope and sign); your links in amber at full strength at any
+  zoom; each orb named once. serve_v6 renders from it. 48/48 pass.
 - `SPEC_V5.md`, `test_serve_v5.py` (5 tests, run red first) and
   `serve_v5.py`: the field draws James's model. The person entity (P9
   v4) is the centre; each subject is an orb on a strand from the centre
@@ -19,6 +43,10 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ### Bad
 
+- My screenshot report said the field's bars ran off a phone's right
+  edge. Wrong: headless Edge will not make a window narrower than about
+  500 px, so the "412 px" shot was a 496 px page cut short. The v7 tests
+  measure phone width in a true 412 px frame instead.
 - The frozen frontend names the opening view "All lenses", and labels
   each orb twice (the orb's name and its cluster's "#name"); changing
   either needs a new frontend layer.

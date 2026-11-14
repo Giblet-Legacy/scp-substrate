@@ -1,0 +1,67 @@
+<!doctype html>
+<!--
+  view_template.html — page shell for the SCP Substrate cube field.
+
+  Function:
+      serve.py fills the /*STYLE*/, /*GRID*/, /*FIELD*/ and /*BAR*/ slots
+      (and the data slots inside view_grid.js) on every request. Read-only
+      in v1: there are no forms, no unlock and no write buttons.
+
+  Tier:     Tier 1 — Consumer (SCP Substrate)
+  Licence:  MSL-1.0
+  Author:   James Gilbert (Giblets Forge)
+-->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cube Field</title>
+<link rel="icon" href="data:,">
+<style>
+/*STYLE*/
+</style>
+</head>
+<body>
+<div id="root">
+  <canvas id="field" aria-label="Your claims as a 3D field of cubes. The grid view lists the same cubes."></canvas>
+  <div id="bar">
+    <nav id="crumbs" aria-label="Where you are"></nav>
+    <input id="fsearch" type="search" placeholder="Search" aria-label="Search cubes">
+    <button class="chip" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" data-f="attested" aria-pressed="false">Attested</button>
+    <button class="chip" data-f="needs" aria-pressed="false">Not attested</button>
+    <button class="chip" id="snap">Screenshot</button>
+    <button class="chip" id="togrid">Grid</button>
+  </div>
+  <div id="modes" aria-label="Cluster by"></div>
+  <div id="timebar">
+    <button class="chip" id="timeplay">Play</button>
+    <input id="timerange" type="range" min="0" max="0" value="0" aria-label="Go through time">
+    <span id="timelabel" role="status"></span>
+  </div>
+  <div id="key"></div>
+  <div id="tip" hidden></div>
+  <aside id="panel" hidden></aside>
+</div>
+<main id="grid" hidden>
+  <p><button class="chip" id="tofield">Back to the field</button></p>
+  <h1>Data Cubes</h1>
+  <p class="sub">Each side is one of the six faces. Solid means filled, hollow means not inspected. A gold glow means a human has attested the claim. The bar shows all six sides at once.</p>
+  <div class="stats" id="stats"></div>
+  <div class="legend" id="legend"></div>
+  <div class="controls" id="controls"></div>
+  <div id="groups"></div>
+</main>
+<dialog id="detail"><button id="close" aria-label="Close">&times;</button><div class="detail" id="body"></div></dialog>
+
+<script>
+/*GRID*/
+</script>
+<script>
+/*FIELD*/
+</script>
+<script>
+/*BAR*/
+</script>
+</body>
+</html>
