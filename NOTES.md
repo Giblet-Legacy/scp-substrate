@@ -54,3 +54,6 @@ P9 substrate (claims/evidence). Old capsules are dead.
 - Freeze serve_v4 at 4.0.0? Built and green on the laptop (39/39); the
   Keywords mode checked in headless Edge. Raised 2026-11-13. Owner: James.
   **Resolved 2026-11-13 — James: "freeze commmit and push".** Frozen on the laptop run; S24 run still to be confirmed.
+- Freeze serve_v5 at 5.0.0? Subjects orbit you (SPEC_V5.md). Built and
+  green on the laptop (44/44). Not yet run on the S24. Raised 2026-11-13.
+  Owner: James.

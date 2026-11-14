@@ -28,6 +28,10 @@ field drawing. Run `python serve_v3.py`.
 `serve_v4.py` (SPEC_V4.md, frozen 4.0.0) is the entry point from
 v4: v3 plus a "Keywords" cluster mode where a subject is the unit.
 
+## v5 layer
+`serve_v5.py` (SPEC_V5.md, built, not frozen): the person entity at the
+centre, subjects as orbs with their claims, "depends on" threads.
+
 ## The Immutable Rule
 Never rewrite a primitive. Add a layer. This repo consumes
 primitives; it never edits them.

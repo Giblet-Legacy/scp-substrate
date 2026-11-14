@@ -6,15 +6,27 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ### Good
 
-- (none)
+- `SPEC_V5.md`, `test_serve_v5.py` (5 tests, run red first) and
+  `serve_v5.py`: the field draws James's model. The person entity (P9
+  v4) is the centre; each subject is an orb on a strand from the centre
+  with its claims gathered round it; "depends on" claims are threads
+  between subjects in the opening view. Uses the frozen frontend's hubs
+  (HUBS, THINGS) and MODES.ALL; static/view/ untouched.
+- 44/44 pass. serve.py and v2-v4 untouched. Built on James's delegation
+  ("the subjects need their own orb with their claims orbiting them as
+  the subject orbits me … connections between each other"). Not frozen
+  (NOTES).
 
 ### Bad
 
-- (none)
+- The frozen frontend names the opening view "All lenses", and labels
+  each orb twice (the orb's name and its cluster's "#name"); changing
+  either needs a new frontend layer.
 
 ### Ugly
 
-- (none)
+- With 23 subjects the ring of orbs is wide, so the opening view is
+  zoomed out; zoom or click an orb to read its claims.
 
 ## [v4.0.0] — 2026-11-13 — FROZEN
 
