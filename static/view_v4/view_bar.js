@@ -1,0 +1,56 @@
+// view_bar.js — the top bar: view switching, filters, cluster modes and the key.
+//
+// Function:
+//     Wires the field's chips and search to window.cubeField and draws the
+//     six-face key. Read-only.
+//
+// Tier:     Tier 1 — Consumer (SCP Substrate)
+// Licence:  MSL-1.0
+// Author:   James Gilbert (Giblets Forge)
+(() => {
+  const root = document.getElementById("root"), grid = document.getElementById("grid");
+  const swap = showGrid => {
+    root.hidden = showGrid; root.style.display = showGrid ? "none" : "";
+    grid.hidden = !showGrid;
+    if (!showGrid) cubeField.show();
+  };
+  document.getElementById("togrid").addEventListener("click", () => swap(true));
+  document.getElementById("snap").addEventListener("click", async e => {
+    const blob = await cubeField.snapshot();
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `cube-field-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, "-")}.png`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    e.target.textContent = "Saved";
+    setTimeout(() => { e.target.textContent = "Screenshot"; }, 1400);
+  });
+  document.getElementById("tofield").addEventListener("click", () => swap(false));
+  const chips = [...document.querySelectorAll("[data-f]")];
+  chips.forEach(chip => chip.addEventListener("click", () => {
+    chips.forEach(c => c.setAttribute("aria-pressed", c === chip));
+    cubeField.setFilter(chip.dataset.f);
+  }));
+  document.getElementById("fsearch").addEventListener("input", e => cubeField.setQuery(e.target.value.trim().toLowerCase()));
+  const modeBar = document.getElementById("modes");
+  modeBar.append(el("span", "", "Cluster by"));
+  const names = { ALL: "All lenses", TAGS: "Tags", REPOS: "Repos", OVERLAPS: "Overlaps", PLACES: "Entities" };
+  const modes = [...Object.keys(MODES), "TAGS"];
+  const modeChips = modes.map(mode => {
+    const chip = el("button", "chip", names[mode] || mode[0] + mode.slice(1).toLowerCase());
+    chip.setAttribute("aria-pressed", mode === cubeField.mode());
+    chip.addEventListener("click", () => {
+      modeChips.forEach(c => c.setAttribute("aria-pressed", c === chip));
+      cubeField.setMode(mode);
+    });
+    modeBar.append(chip);
+    return chip;
+  });
+  const key = document.getElementById("key");
+  LENSES.forEach(lens => {
+    const swatch = el("i");
+    swatch.style.background = `var(--${VAR[lens]})`;
+    key.append(swatch, document.createTextNode(lens[0] + lens.slice(1).toLowerCase()));
+  });
+  key.append(document.createTextNode("   ·   Green centre: you   ·   Pink orbs: yours, close round you   ·   Green strand: a claim you attested   ·   Gold glow: attested (human attestation, never a face)   ·   Grey side: UNKNOWN, an open question   ·   Hollow: face not inspected   ·   Claims cluster by subject   ·   Click to go in, Esc to back out, scroll to zoom"));
+})();

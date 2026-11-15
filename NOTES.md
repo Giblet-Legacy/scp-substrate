@@ -2,6 +2,17 @@
 
 NOTES.md — decisions and open questions for SCP Substrate.
 
+## Open questions
+
+- **Freeze serve_v8 at 8.0.0?** You at the centre of what is yours
+  (SPEC_V8.md) and static/view_v4 (yours pink, close round you). Built
+  and green on the laptop. Not yet run on the S24.
+  Raised 2026-11-15. Owner: James.
+- **102 orbs.** Resolved 2026-11-15 in v8 itself — James: "yesbuild
+  it". Projects are parts of their section's orb (SPEC_V8 §1.1). A new
+  claim about you should carry a `section` field (e.g. "hardware and
+  robotics"); without one, the CONTEXT wording decides, else "other".
+
 ## Harvest sources
 
 | Path | What was harvested |

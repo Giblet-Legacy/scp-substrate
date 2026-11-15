@@ -6,15 +6,58 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ### Good
 
-- (none)
+- `SPEC_V8.md`, `serve_v8.py`, `test_serve_v8.py` (3 tests, run red
+  first): you at the centre of what is yours. A claim about the person
+  ("James Gilbert is building SCPBot") is shown in the orb of its
+  object, so each project orbits James with its claims inside; no orb
+  is named after him. A project that is also a registered repo is one
+  orb (the-legacy, scp-substrate, sc-os, lllm). Only the page's copies
+  change; signed claims and the API are v7's. On the real memory: 24
+  orbs (one of them "James Gilbert") become 102, James at the centre.
+  Built on James's delegation ("i should be at the centre …").
+- `static/view_v4` (a copy of view_v3, which is untouched; only
+  view_field_hubs.js and view_bar.js differ): your orbs (`yours: true`
+  in HUBS) are pink and held at half the orbit radius with twice the
+  pull, so they ring you closely and the repos form the outer shell
+  (James: "my stuff should be a different coulr and tighter to the
+  centre"). 5 tests, including one that parses the whole page script.
+- Sections (SPEC_V8 §1.1, after screenshots showed 78 one-claim orbs,
+  most unnamed): your projects are now parts of eight section orbs
+  (hardware and robotics, games, writing and story engines, …) plus
+  "about James Gilbert" and "other", from each claim's CONTEXT; no
+  claim re-signed. Inside a section every project circles it, named,
+  with its status in the panel (shipped, built, is building…). On the
+  real memory: 102 orbs become 33 (10 yours, 23 repos).
+- view_v4 also: you stay green (drawn again over the strands); orbs are
+  held to their shells (yours 0.4–0.6 of the radius, repos 0.9–1.1);
+  the camera frames where the orbs settled, so the field fills the
+  screen; part names keep clear of every other name.
+- A claim about the person can name its own section: a `section` field
+  on the signed capsule (read from P9) wins over the CONTEXT wording,
+  which stays as the fallback for the 83 identity claims already
+  signed. The camera's margin now fits the furthest orb and its name
+  on the shorter side, so nothing is cut off at phone width (checked
+  at 412 px). Not frozen (NOTES).
 
 ### Bad
 
-- (none)
+- v5–v7 made one orb per claim subject, so the 83 identity claims about
+  James sat in a single "James Gilbert" orb circling James himself.
+- view_v4's first build named a helper `reach`, which view_field_form.js
+  already declares; the joined page script failed and the field drew
+  nothing. Caught on a screenshot, renamed (`orbitOf`), and the v8 tests
+  now run the whole page script through `node --check`.
+- Springs alone did not hold "yours" close: measured in the page, the
+  orbs pushing apart carried the sections out to 0.86–0.93 of the
+  radius and the repos to 1.43, and the camera framed that, so the
+  field looked smaller than before. Now each kind is held in a band.
 
 ### Ugly
 
-- (none)
+- The 83 identity claims signed on 2026-11-15 carry no `section` field,
+  so they are grouped by their CONTEXT wording ("Identity capsule <id>,
+  <section>."). New claims about the person should carry `section`.
+
 
 ## [v7.0.0 (with v5.0.0 and v6.0.0)] — 2026-11-14 — FROZEN
 
