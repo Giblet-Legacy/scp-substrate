@@ -8,6 +8,7 @@ NOTES.md — decisions and open questions for SCP Substrate.
   (SPEC_V8.md) and static/view_v4 (yours pink, close round you). Built
   and green on the laptop. Not yet run on the S24.
   Raised 2026-11-15. Owner: James.
+  **Resolved 2026-11-16 — James: "freeze".** Frozen 8.0.0; 59/59 on the laptop, and in use on the VPS (the Legacy's Field), opened from the S24 and the PC.
 - **102 orbs.** Resolved 2026-11-15 in v8 itself — James: "yesbuild
   it". Projects are parts of their section's orb (SPEC_V8 §1.1). A new
   claim about you should carry a `section` field (e.g. "hardware and

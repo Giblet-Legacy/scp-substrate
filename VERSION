@@ -13,4 +13,6 @@
 
 # 7.0.0 — serve_v7.py + static/view_v3 frozen (SPEC_V7.md: #entity links open the orb, names never overlap). 54/54. Tests pass on the laptop and the S24 (4.0.0 confirmed on the S24 in the same run).
 
-7.0.0
+# 8.0.0 — serve_v8.py + static/view_v4 frozen (SPEC_V8.md: you at the centre, yours pink and close, sections, the camera framing). 59/59 on the laptop; in use on the VPS as the Legacy's Field, viewed from the S24 and the PC.
+
+8.0.0

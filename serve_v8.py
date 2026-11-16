@@ -26,7 +26,7 @@ Internal helpers:
 Tier:      Tier 1 — Consumer (The Memory)
 Depends:   serve_v7.py (7.0.0)
 Spec:      SPEC_V8.md 8.0.0 (over SPEC_V7.md 7.0.0)
-Version:   8.0.0-dev
+Version:   8.0.0 (frozen 2026-11-16)
 Licence:   MSL-1.0
 Author:    James Gilbert (Giblets Forge)
 """

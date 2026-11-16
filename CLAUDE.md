@@ -41,7 +41,7 @@ links that open the orb and names that never overlap; serve_v7 renders
 from it. Run `python serve_v7.py`.
 
 ## v8 layer
-`serve_v8.py` (SPEC_V8.md, 8.0.0-dev, not frozen): v7, with each claim about the
+`serve_v8.py` (SPEC_V8.md, frozen 8.0.0): v7, with each claim about the
 person shown in the orb of its object, so the person is the centre of what is
 theirs, rendered from `static/view_v4/` (a copy of view_v3: their orbs pink and at
 half the orbit radius). Page only; the API is v7's. Run `python serve_v8.py`.

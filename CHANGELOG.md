@@ -4,6 +4,12 @@ CHANGELOG.md — build history for SCP Substrate, latest entry at top.
 
 ## [Unreleased]
 
+### Frozen 2026-11-16 (James: "freeze")
+
+- serve_v8.py + static/view_v4 at 8.0.0 (SPEC_V8.md). VERSION 7.0.0 -> 8.0.0.
+  59/59 on the laptop; the Field of the Legacy 1.9.0 on the VPS, used from
+  the S24 and the PC.
+
 ### Good
 
 - `SPEC_V8.md`, `serve_v8.py`, `test_serve_v8.py` (3 tests, run red
